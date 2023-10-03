@@ -5,3 +5,13 @@ tr
 {
     height: 50px;
 }
+form
+{
+    background-color: white;
+    width: 600px;
+    margin-top: 10px;
+}
+table
+{
+    font-style: italic;
+}

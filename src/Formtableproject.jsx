@@ -21,11 +21,6 @@ function FormTable()
         setinputdata([...inputdata,inputdetails]);
         setinputdetails({});
     }
-    // function handledelete(ind)
-    // {
-    //    const updatedetails= inputdata.filter(li => li.ind !== ind)
-    //    setinputdata(updatedetails);
-    // }
     function handledelete(fid)
     {
         // alert(fid);
@@ -47,28 +42,110 @@ function FormTable()
                 <h1>Students Details</h1>
              <label>Full Name
                 <input 
+                required
                    type="text"
                     name="Name"
-                    placeholder="First Name "
+                    placeholder="First Name"
                     onChange={handleChange}
-                 />
+                    maxLength={14}
+                 />&nbsp;&nbsp;
                  <input 
+                 required
                    type="text"
                     name="Surname"
                     placeholder="Last Name"
                     onChange={handleChange}
+                    maxLength={14}
                  />
-             </label><br /><br /><br />
-             <input type="submit" />
+             </label><br /><br />
+             <label>Age
+                 <input
+                 required 
+                    type="date"
+                    name="Age"
+                    placeholder="Fill your age"
+                    onChange={handleChange}
+                    min={18}
+                />
+             </label><br /><br />
+             <label>Branch
+                 <select name="Branch"
+                 required 
+                      onChange={handleChange}>
+                     <option value="">Select branch</option>
+                     <option value="ME">ME</option>
+                     <option value="EE">EE</option>
+                     <option value="EC">EC</option>
+                     <option value="IT">IT</option>
+                     <option value="CS">CS</option>
+                     <option value="CE">CE</option>    
+                 </select>
+             </label>
+             <label>Section
+                 <select name="Section" 
+                 required
+                     onChange={handleChange}>
+                     <option value="">Select branch</option>
+                     <option value="A">A</option>
+                     <option value="B">B</option>
+                     <option value="C">C</option>
+                     <option value="D">D</option>
+                     <option value="E">E</option>
+                     <option value="F">F</option>    
+                 </select>
+             </label><br /><br />
+             <label>Roll No
+                 <input 
+                    required
+                    type="number"
+                    name="Rollno"
+                    placeholder="Please fill your roll number"
+                    onChange={handleChange}
+                    min={1}
+                />
+             </label><br /><br />
+             <label>Email Id
+                 <input 
+                    required
+                    type="text"
+                    name="Email"
+                    placeholder="Please fill your Email Id"
+                    onChange={handleChange}
+                />
+             </label><br /><br />
+             <label>Phone No.
+             <input 
+                    required
+                    type="number"
+                    name="Code"
+                    placeholder="Area Code"
+                    onChange={handleChange}
+                    maxLength={2}
+                />
+                 <input 
+                    required
+                    type="number"
+                    name="Phone"
+                    placeholder="Phone number"
+                    onChange={handleChange}
+                    maxLength={10}
+                />
+             </label><br /><br />
+             <input type="submit" /><br /><br />
              </form><br />
-             <button type="button" onClick={deletedetails}>Reset Detials</button>
-
-             <table cellPadding={1} cellSpacing={0} border={1}>
+             
+             <table cellPadding={10} cellSpacing={0} border={1}>
                 <thead>
                     <tr>
-                        <th>id</th>
+                        <th>Sr no.</th>
                         <th>Name</th>
+                        <th>Age</th>
+                        <th>Branch</th>
+                        <th>Section</th>
+                        <th>Roll No.</th>
                         <th>Delete</th>
+                        <th>Email Id</th>
+                        <th>Phone No.</th>
                     </tr>
                 </thead>
                 <tbody>
@@ -79,20 +156,28 @@ function FormTable()
                             <tr key={index}>
                                 <td>{index+1}</td>
                                 <td>{data.Name} {data.Surname}</td>
+                                <td>{data.Age}</td>
+                                <td>{data.Branch}</td>
+                                <td>{data.Section}</td>
+                                <td>{data.Rollno}</td>
+                                <td>{data.Email}</td>
+                                <td>{data.Code} {data.Phone}</td>
                                 <td>
                                     <button type="button" onClick={()=>
                                     {
                                       handledelete(index) 
                                        
                                      
-                                    }}>Delete</button>
+                                    }}>Delete Details</button>
                                 </td>
                             </tr>
                            )
                         })
                     }
                 </tbody>
-             </table>
+             </table><br />
+             <button type="button" onClick={deletedetails}>Reset All Details</button><br /><br />
+
          </center>
     )
 }
