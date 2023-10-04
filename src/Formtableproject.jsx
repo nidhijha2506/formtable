@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import 'bootstrap/dist/css/bootstrap.css';
 import "./Style.css";
 function FormTable()
 {
@@ -8,7 +9,10 @@ function FormTable()
     const handleChange =(event)=>
     {
         let name=event.target.name;
-        let value=event.target.value;
+        let value=event.target.value.toLowerCase()
+        .split(' ')
+        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
+        .join(' ');
         setinputdetails(values => ({...values, [name]: value}));
     }
 
@@ -37,10 +41,10 @@ function FormTable()
     
     
     return(
-         <center>
-             <form onSubmit={handleSubmit}>
-                <h1>Students Details</h1>
-             <label>Full Name
+         <>
+             <form onSubmit={handleSubmit} className="mt-5">
+                <h3 className="bg-black text-white py-2 text-center stu_details">Students Details</h3>
+             <label className="fw-bold mt-3">Full Name &nbsp;&nbsp;&nbsp;
                 <input 
                 required
                    type="text"
@@ -48,6 +52,7 @@ function FormTable()
                     placeholder="First Name"
                     onChange={handleChange}
                     maxLength={14}
+                    className="w-25"
                  />&nbsp;&nbsp;
                  <input 
                  required
@@ -56,9 +61,10 @@ function FormTable()
                     placeholder="Last Name"
                     onChange={handleChange}
                     maxLength={14}
+                    className="w-25"
                  />
              </label><br /><br />
-             <label>Age
+             <label className="fw-bold">Age&nbsp;
                  <input
                  required 
                     type="date"
@@ -66,13 +72,15 @@ function FormTable()
                     placeholder="Fill your age"
                     onChange={handleChange}
                     min={18}
+                    className="age_width age_input"
                 />
              </label><br /><br />
-             <label>Branch
+             <label className="fw-bold">Branch
                  <select name="Branch"
                  required 
+                      className="branch_option"
                       onChange={handleChange}>
-                     <option value="">Select branch</option>
+                     <option value="">Branch</option>
                      <option value="ME">ME</option>
                      <option value="EE">EE</option>
                      <option value="EC">EC</option>
@@ -81,11 +89,12 @@ function FormTable()
                      <option value="CE">CE</option>    
                  </select>
              </label>
-             <label>Section
+             <label className="fw-bold section_margin">Section
                  <select name="Section" 
                  required
+                    className="section_option"
                      onChange={handleChange}>
-                     <option value="">Select branch</option>
+                     <option value="">Section</option>
                      <option value="A">A</option>
                      <option value="B">B</option>
                      <option value="C">C</option>
@@ -94,9 +103,10 @@ function FormTable()
                      <option value="F">F</option>    
                  </select>
              </label><br /><br />
-             <label>Roll No
+             <label className="fw-bold">Roll No
                  <input 
                     required
+                    className="roll_input"
                     type="number"
                     name="Rollno"
                     placeholder="Please fill your roll number"
@@ -104,51 +114,54 @@ function FormTable()
                     min={1}
                 />
              </label><br /><br />
-             <label>Email Id
+             <label className="fw-bold">Email Id
                  <input 
                     required
+                    className="email_input"
                     type="text"
                     name="Email"
                     placeholder="Please fill your Email Id"
                     onChange={handleChange}
                 />
              </label><br /><br />
-             <label>Phone No.
+             <label className="fw-bold">Phone No.
              <input 
                     required
-                    type="number"
+                    className="areacode_input"
+                    type="text"
                     name="Code"
                     placeholder="Area Code"
                     onChange={handleChange}
                     maxLength={2}
-                />
+                />&nbsp;&nbsp;
                  <input 
                     required
-                    type="number"
+                    className="phone_input"
+                    type="text"
                     name="Phone"
                     placeholder="Phone number"
                     onChange={handleChange}
                     maxLength={10}
                 />
              </label><br /><br />
-             <input type="submit" /><br /><br />
+             <input type="submit" className="bg-primary w-25 h5 fw-bold h-25 submit_btn" /><br /><br />
              </form><br />
              
-             <table cellPadding={10} cellSpacing={0} border={1}>
+             <table cellPadding={10} cellSpacing={0} border={1} className="bg-secondary text-center">
                 <thead>
                     <tr>
                         <th>Sr no.</th>
-                        <th>Name</th>
-                        <th>Age</th>
+                        <th className="name_th">Name</th>
+                        <th className="age_th">Age</th>
                         <th>Branch</th>
                         <th>Section</th>
                         <th>Roll No.</th>
-                        <th>Delete</th>
-                        <th>Email Id</th>
-                        <th>Phone No.</th>
+                        <th className="email_th">Email Id</th>
+                        <th className="phone_th">Phone No.</th>
+                        <th className="delete_th">Delete</th>
                     </tr>
                 </thead>
-                <tbody>
+                <tbody className="bg-white">
                     {
                         inputdata.map((data,index)=>
                         {
@@ -168,7 +181,7 @@ function FormTable()
                                       handledelete(index) 
                                        
                                      
-                                    }}>Delete Details</button>
+                                    }} className="bg-danger">Delete</button>
                                 </td>
                             </tr>
                            )
@@ -176,9 +189,9 @@ function FormTable()
                     }
                 </tbody>
              </table><br />
-             <button type="button" onClick={deletedetails}>Reset All Details</button><br /><br />
+             <button type="button" onClick={deletedetails} className="bg-danger reset_button">Reset All Details</button><br /><br />
 
-         </center>
+         </>
     )
 }
 export default FormTable;

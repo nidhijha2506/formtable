@@ -1,5 +1,5 @@
 body{
-    background-color: yellow;
+    background-color: rgba(0, 255, 128, 0.616);
 }
 tr
 {
@@ -14,4 +14,101 @@ form
 table
 {
     font-style: italic;
+}
+input
+{
+    height: 25px;
+
+}
+.stu_details
+{
+    margin-top: 10px;
+
+}
+td
+{
+    border: 1px solid black;
+}
+th
+{
+    border: 1px solid black;
+}
+.age_width
+{
+    width: 250px;
+    margin-left: 60px;
+}
+.section_margin
+{
+    margin-left: 30px;
+}
+.section_option
+{
+    margin-left: 13px;
+}
+.branch_option
+{
+    margin-left: 42px;
+}
+form{
+    margin-left: 350px;
+    width: 660px;
+}
+table
+{
+    margin-left: 200px;
+}
+.reset_button
+{
+    margin-left: 620px;
+}
+label
+{
+    margin-left: 150px;
+}
+.submit_btn
+{
+    margin-left: 270px;
+}
+.roll_input
+{
+    margin-left: 40px;
+    width: 248px;
+}
+.email_input
+{
+    margin-left: 38px;
+    width: 248px;
+}
+.areacode_input
+{
+    margin-left: 20px;
+    width: 100px;
+}
+.phone_input
+{
+    width: 140px;
+}
+.phone_th
+{
+    width: 150px;
+}
+.email_th
+{
+    width: 220px;
+}
+.name_th
+{
+    width: 100px;
+}
+.delete_th
+{
+    width: 100px;
+}
+.age_width{
+    width: 100px;
+}
+.age_input
+{
+    width: 250px;
 }
