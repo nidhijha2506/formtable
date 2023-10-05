@@ -139,7 +139,7 @@ function FormTable()
                     className="phone_input"
                     type="text"
                     name="Phone"
-                    placeholder="Phone number"
+                    placeholder="Phone Number"
                     onChange={handleChange}
                     maxLength={10}
                 />
