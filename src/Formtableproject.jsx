@@ -1,10 +1,27 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import "./Style.css";
+
+//to get data from local storage
+
+const getLocalDetails =()=>
+{
+    let stu_details = localStorage.getItem('details');
+    //console.log(stu_details);
+    if(stu_details)
+    {
+        return JSON.parse(localStorage.getItem('details'))
+    }
+    else{
+        return [];
+    }
+}
+
 function FormTable()
 {
     const [inputdetails,setinputdetails]= useState({});
-    const [inputdata,setinputdata]= useState([]);
+    const [inputdata,setinputdata]= useState(getLocalDetails());
+    const [UpdateDetails,setupdateDetails] =useState(-1);
 
     const handleChange =(event)=>
     {
@@ -34,10 +51,31 @@ function FormTable()
         })
         setinputdata(Updatedetails);
     }
+    
+    function handleEdit(index)
+    {
+        setupdateDetails(index);
+    }
+
+    function Edit()
+    {
+           return(
+            <tr>
+                <input type="text" name="Name" />
+            </tr>
+           )
+    }
+
     function deletedetails()
     {
         setinputdata([]);
     }
+    
+    // add data to local storage.
+    useEffect(()=>
+    {
+        localStorage.setItem('details',JSON.stringify(inputdata))
+    }, [inputdata]);
     
     
     return(
@@ -158,14 +196,16 @@ function FormTable()
                         <th>Roll No.</th>
                         <th className="email_th">Email Id</th>
                         <th className="phone_th">Phone No.</th>
-                        <th className="delete_th">Delete</th>
+                        <th className="delete_th">Delete & Edit</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white">
                     {
                         inputdata.map((data,index)=>
                         {
+                           
                            return (
+                            UpdateDetails ===data.index ? <Edit/>:
                             <tr key={index}>
                                 <td>{index+1}</td>
                                 <td>{data.Name} {data.Surname}</td>
@@ -176,6 +216,9 @@ function FormTable()
                                 <td>{data.Email}</td>
                                 <td>{data.Code} {data.Phone}</td>
                                 <td>
+                                    <button type="button" onClick={()=> handleEdit(data.index)}
+                                    className="bg-success">Edit</button>
+
                                     <button type="button" onClick={()=>
                                     {
                                       handledelete(index) 
