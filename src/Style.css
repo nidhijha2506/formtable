@@ -112,3 +112,39 @@ label
 {
     width: 250px;
 }
+.search-name
+{
+    width: 100px;
+    margin-left: 265px;
+    height: 30px;
+}
+.search-age
+{
+    width: 72px;
+    height: 30px;
+}
+.search-branch
+{
+    width: 73px;
+    height: 30px;
+}
+.search-section
+{
+    width: 76px;
+    height: 30px;
+}
+.rollno-section
+{
+    width: 57px;
+    height: 30px;
+}
+.email-section
+{
+    width: 220px;
+    height: 30px;
+}
+.phone-section
+{
+    width: 150px;
+    height: 30px;
+}

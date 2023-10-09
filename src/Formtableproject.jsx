@@ -17,11 +17,20 @@ const getLocalDetails =()=>
     }
 }
 
+
+
 function FormTable()
 {
     const [inputdetails,setinputdetails]= useState({});
     const [inputdata,setinputdata]= useState(getLocalDetails());
-    const [UpdateDetails,setupdateDetails] =useState(-1);
+    const [UpdateDetails,setupdateDetails] = useState(-1);
+    const [nameFilter, setNameFilter] = useState('');
+    const [ageFilter, setAgeFilter] = useState('');
+    const [branchFilter, setBranchFilter] = useState('');
+    const [sectionFilter, setSectionFilter] = useState('');
+    const [rollNoFilter, setrollNoFilter] = useState('');
+    const [emailFilter, setemailFilter] = useState('');
+    const [mobileFilter, setmobileFilter] = useState('');
 
     const handleChange =(event)=>
     {
@@ -54,27 +63,78 @@ function FormTable()
     
     function handleEdit(index)
     {
+        console.log('Editing row:', index);
         setupdateDetails(index);
     }
+    
 
-    function Edit()
+    function Edit({data,inputdata,setinputdata,setupdateDetails})
     {
+        const [localData, setLocalData] = useState({ ...data }); 
+
+        function handleInput(e) {
+        const { name, value } = e.target;
+        setLocalData((prevData) => ({ ...prevData, [name]: value }));
+        }
+        
+        function handleUpdate(e)
+        {
+             e.preventDefault();
+             console.log('Before Update:', inputdata);
+             setinputdata((prevInputData) =>
+             prevInputData.map((li) => (li.index === data.index ? { ...li, ...localData } : li))
+             );
+             console.log('After Update:', inputdata);
+             setupdateDetails(-1)
+            
+        }
            return(
             <tr>
-                <input type="text" name="Name" />
+                <td>
+                    <input 
+                required
+                   type="text"
+                    name="Name"
+                    placeholder="First Name"
+                    onChange={handleInput}
+                    maxLength={14}
+                    className="w-25"
+                    value={localData.Name}
+                 />
+                </td>
+                <td><button type="submit" onClick={handleUpdate}>Update</button></td>
+                
             </tr>
            )
     }
+    
+
+   
 
     function deletedetails()
     {
         setinputdata([]);
     }
-    
-    // add data to local storage.
-    useEffect(()=>
+
+
+    const filteredData = inputdata.filter((data) => {
+        const nameMatch = data.Name.toLowerCase().includes(nameFilter.toLowerCase());
+        const ageMatch = data.Age.toString().includes(ageFilter);
+        const branchMatch = data.Branch.toLowerCase().includes(branchFilter.toLowerCase());
+        const sectionMatch = data.Section.toLowerCase().includes(sectionFilter.toLowerCase());
+        const rollnoMatch = data.Rollno.toString().includes(rollNoFilter);
+        const emailMatch = data.Email.toLowerCase().includes(emailFilter.toLowerCase());
+        const phonenoMatch = data.Phone.toString().includes(mobileFilter);
+        // Add filters for other fields as needed
+
+        return nameMatch && ageMatch && branchMatch && sectionMatch && rollnoMatch && emailMatch && phonenoMatch;
+  });
+
+  useEffect(()=>
     {
+        console.log('Before storing in local storage:', inputdata);
         localStorage.setItem('details',JSON.stringify(inputdata))
+        console.log('After storing in local storage:', inputdata);
     }, [inputdata]);
     
     
@@ -184,6 +244,44 @@ function FormTable()
              </label><br /><br />
              <input type="submit" className="bg-primary w-25 h5 fw-bold h-25 submit_btn" /><br /><br />
              </form><br />
+
+            <div className="filter-div">
+            <input type="text" value={nameFilter} 
+            onChange={(e) => setNameFilter(e.target.value)} 
+            placeholder="Name" className=" text-center search-name"/>
+            
+            <input type="text" value={ageFilter} 
+            onChange={(e) => setAgeFilter(e.target.value)}
+            placeholder="Age" className=" text-center search-age"
+             />
+            
+             <input type="text" value={branchFilter} 
+             onChange={(e) => setBranchFilter(e.target.value)}
+             placeholder="Branch" className="text-center search-branch"
+              />
+
+             <input type="text" value={sectionFilter} 
+             onChange={(e) => setSectionFilter(e.target.value)}
+             placeholder="Section" className="text-center search-section"
+              />
+            
+            <input type="text" value={rollNoFilter} 
+             onChange={(e) => setrollNoFilter(e.target.value)}
+             placeholder="Roll No" className="text-center rollno-section"
+              />
+
+            <input type="text" value={emailFilter} 
+             onChange={(e) => setemailFilter(e.target.value)}
+             placeholder="Email Address" className="text-center email-section"
+              />
+
+            <input type="text" value={mobileFilter} 
+             onChange={(e) => setmobileFilter(e.target.value)}
+             placeholder="Phone No" className="text-center phone-section"
+              /> <br /><br />
+            </div>
+            
+
              
              <table cellPadding={10} cellSpacing={0} border={1} className="bg-secondary text-center">
                 <thead>
@@ -201,12 +299,18 @@ function FormTable()
                 </thead>
                 <tbody className="bg-white">
                     {
-                        inputdata.map((data,index)=>
+                        filteredData.map((data,index)=>
                         {
                            
                            return (
-                            UpdateDetails ===data.index ? <Edit/>:
-                            <tr key={index}>
+                            UpdateDetails === index ? 
+                            (<Edit key={index} 
+                                data={data} 
+                                inputdata={inputdata} 
+                                setinputdata={setinputdata}
+                                setupdateDetails={setupdateDetails}
+                                />):
+                            (<tr key={index}>
                                 <td>{index+1}</td>
                                 <td>{data.Name} {data.Surname}</td>
                                 <td>{data.Age}</td>
@@ -216,7 +320,7 @@ function FormTable()
                                 <td>{data.Email}</td>
                                 <td>{data.Code} {data.Phone}</td>
                                 <td>
-                                    <button type="button" onClick={()=> handleEdit(data.index)}
+                                    <button type="button" onClick={()=> handleEdit(index)}
                                     className="bg-success">Edit</button>
 
                                     <button type="button" onClick={()=>
@@ -226,7 +330,7 @@ function FormTable()
                                      
                                     }} className="bg-danger">Delete</button>
                                 </td>
-                            </tr>
+                            </tr>)
                            )
                         })
                     }
