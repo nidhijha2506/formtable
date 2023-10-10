@@ -61,16 +61,21 @@ function FormTable()
         setinputdata(Updatedetails);
     }
     
-    function handleEdit(index)
-    {
+    // function handleEdit(index)
+    // {
+    //     console.log('Editing row:', index);
+    //     //filteredData.find();
+    //     setupdateDetails(index);
+    // }
+    function handleEdit(index) {
         console.log('Editing row:', index);
         setupdateDetails(index);
-    }
+      }
     
 
     function Edit({data,inputdata,setinputdata,setupdateDetails})
     {
-        const [localData, setLocalData] = useState({ ...data }); 
+        const [localData, setLocalData] = useState(JSON.parse(JSON.stringify(data))); 
 
         function handleInput(e) {
         const { name, value } = e.target;
@@ -79,13 +84,29 @@ function FormTable()
         
         function handleUpdate(e)
         {
-             e.preventDefault();
+             //e.preventDefault();
              console.log('Before Update:', inputdata);
-             setinputdata((prevInputData) =>
-             prevInputData.map((li) => (li.index === data.index ? { ...li, ...localData } : li))
-             );
-             console.log('After Update:', inputdata);
-             setupdateDetails(-1)
+            //  setinputdata((prevInputData) =>
+            //  prevInputData.map((li) => (li.index === data.index ? { ...li, ...localData } : li))
+            //  );
+
+            const rowIndex = inputdata.findIndex((li) => li.index === data.index);
+            console.log('rowindex',rowIndex);
+
+            if (rowIndex !== -1) {
+                const updatedData = [...inputdata];
+                console.log('updateddata',updatedData);
+                updatedData[rowIndex] = { ...updatedData[rowIndex], ...localData };
+                setinputdata(updatedData);
+                
+        
+                console.log('After Update:', updatedData);
+                setupdateDetails(-1);
+            } else {
+                console.error('Row not found for update');
+            }
+            //  console.log('After Update:', inputdata);
+            //  setupdateDetails(-1)
             
         }
            return(
@@ -125,9 +146,10 @@ function FormTable()
         const rollnoMatch = data.Rollno.toString().includes(rollNoFilter);
         const emailMatch = data.Email.toLowerCase().includes(emailFilter.toLowerCase());
         const phonenoMatch = data.Phone.toString().includes(mobileFilter);
-        // Add filters for other fields as needed
+        
 
-        return nameMatch && ageMatch && branchMatch && sectionMatch && rollnoMatch && emailMatch && phonenoMatch;
+        return nameMatch && ageMatch && branchMatch && sectionMatch && rollnoMatch && 
+        emailMatch && phonenoMatch;
   });
 
   useEffect(()=>
@@ -165,7 +187,7 @@ function FormTable()
              <label className="fw-bold">Age&nbsp;
                  <input
                  required 
-                    type="date"
+                    type="number"
                     name="Age"
                     placeholder="Fill your age"
                     onChange={handleChange}
@@ -299,7 +321,7 @@ function FormTable()
                 </thead>
                 <tbody className="bg-white">
                     {
-                        filteredData.map((data,index)=>
+                        filteredData?.map((data,index)=>
                         {
                            
                            return (
