@@ -61,68 +61,161 @@ function FormTable()
         setinputdata(Updatedetails);
     }
     
-    // function handleEdit(index)
-    // {
-    //     console.log('Editing row:', index);
-    //     //filteredData.find();
-    //     setupdateDetails(index);
-    // }
-    function handleEdit(index) {
+    function handleEdit(index)
+    {
         console.log('Editing row:', index);
+        //const updatedata=filteredData.find((li) => li.index === index);
         setupdateDetails(index);
-      }
+    }
+    // function handleEdit(index) {
+    //     console.log('Editing row:', index);
+    //     setupdateDetails(index);
+    //   }
     
 
     function Edit({data,inputdata,setinputdata,setupdateDetails})
     {
-        const [localData, setLocalData] = useState(JSON.parse(JSON.stringify(data))); 
+        const [localData, setLocalData] = useState({ ...data }); 
 
-        function handleInput(e) {
+        function handleChange(e) {
         const { name, value } = e.target;
         setLocalData((prevData) => ({ ...prevData, [name]: value }));
         }
         
-        function handleUpdate(e)
+        function handleUpdate()
         {
              //e.preventDefault();
              console.log('Before Update:', inputdata);
-            //  setinputdata((prevInputData) =>
-            //  prevInputData.map((li) => (li.index === data.index ? { ...li, ...localData } : li))
-            //  );
 
             const rowIndex = inputdata.findIndex((li) => li.index === data.index);
             console.log('rowindex',rowIndex);
 
             if (rowIndex !== -1) {
-                const updatedData = [...inputdata];
-                console.log('updateddata',updatedData);
-                updatedData[rowIndex] = { ...updatedData[rowIndex], ...localData };
+                const updatedData = inputdata.map((item, index) =>
+                    index === rowIndex ? { ...item, ...localData } : item
+                );
+    
                 setinputdata(updatedData);
-                
-        
-                console.log('After Update:', updatedData);
                 setupdateDetails(-1);
             } else {
                 console.error('Row not found for update');
             }
-            //  console.log('After Update:', inputdata);
-            //  setupdateDetails(-1)
             
         }
            return(
             <tr>
+                <td>
+                
+                </td>
                 <td>
                     <input 
                 required
                    type="text"
                     name="Name"
                     placeholder="First Name"
-                    onChange={handleInput}
+                    onChange={handleChange}
                     maxLength={14}
-                    className="w-25"
+                    className="text-center"
                     value={localData.Name}
                  />
+                 <input 
+                 required
+                   type="text"
+                    name="Surname"
+                    placeholder="Last Name"
+                    onChange={handleChange}
+                    maxLength={14}
+                    className=""
+                    value={localData.Surname}
+                 />
                 </td>
+                 <td>
+                 <input
+                 required 
+                    type="number"
+                    name="Age"
+                    placeholder="age"
+                    onChange={handleChange}
+                    min={18}
+                    className=""
+                    value={localData.Age}
+                />
+                 </td>
+
+                 <td>
+                 <select name="Branch"
+                 required 
+                      className=""
+                      onChange={handleChange}>
+                     <option value="">Branch</option>
+                     <option value="ME">ME</option>
+                     <option value="EE">EE</option>
+                     <option value="EC">EC</option>
+                     <option value="IT">IT</option>
+                     <option value="CS">CS</option>
+                     <option value="CE">CE</option>    
+                 </select>
+                 </td>
+
+                 <td>
+                 <select name="Section" 
+                 required
+                    className=""
+                     onChange={handleChange}>
+                     <option value="">Section</option>
+                     <option value="A">A</option>
+                     <option value="B">B</option>
+                     <option value="C">C</option>
+                     <option value="D">D</option>
+                     <option value="E">E</option>
+                     <option value="F">F</option>    
+                 </select>
+                 </td>
+
+                 <td>
+                 <input 
+                    required
+                    className=""
+                    type="number"
+                    name="Rollno"
+                    placeholder="Please fill your roll number"
+                    onChange={handleChange}
+                    min={1}
+                />
+                 </td>
+
+                 <td>
+                 <input 
+                    required
+                    className=""
+                    type="text"
+                    name="Email"
+                    placeholder="Please fill your Email Id"
+                    onChange={handleChange}
+                />
+                 </td>
+                
+                <td>
+                <input 
+                    required
+                    className=""
+                    type="text"
+                    name="Code"
+                    placeholder="Area Code"
+                    onChange={handleChange}
+                    maxLength={2}
+                />&nbsp;&nbsp;
+                 <input 
+                    required
+                    className=""
+                    type="text"
+                    name="Phone"
+                    placeholder="Phone Number"
+                    onChange={handleChange}
+                    maxLength={10}
+                />
+                </td>
+                
                 <td><button type="submit" onClick={handleUpdate}>Update</button></td>
                 
             </tr>
@@ -316,7 +409,8 @@ function FormTable()
                         <th>Roll No.</th>
                         <th className="email_th">Email Id</th>
                         <th className="phone_th">Phone No.</th>
-                        <th className="delete_th">Delete & Edit</th>
+                        <th className="delete_th">Edit</th>
+                        <th>Delete</th>
                     </tr>
                 </thead>
                 <tbody className="bg-white">
@@ -344,7 +438,8 @@ function FormTable()
                                 <td>
                                     <button type="button" onClick={()=> handleEdit(index)}
                                     className="bg-success">Edit</button>
-
+                                </td>
+                                <td>
                                     <button type="button" onClick={()=>
                                     {
                                       handledelete(index) 
