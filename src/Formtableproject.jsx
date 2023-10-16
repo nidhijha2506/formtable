@@ -23,7 +23,7 @@ function FormTable()
 {
     const [inputdetails,setinputdetails]= useState({});
     const [inputdata,setinputdata]= useState(getLocalDetails());
-    const [UpdateDetails,setupdateDetails] = useState(-1);
+    const [updateDetails,setupdateDetails] = useState(inputdetails);
     const [nameFilter, setNameFilter] = useState('');
     const [ageFilter, setAgeFilter] = useState('');
     const [branchFilter, setBranchFilter] = useState('');
@@ -31,7 +31,8 @@ function FormTable()
     const [rollNoFilter, setrollNoFilter] = useState('');
     const [emailFilter, setemailFilter] = useState('');
     const [mobileFilter, setmobileFilter] = useState('');
-
+    
+    
     const handleChange =(event)=>
     {
         let name=event.target.name;
@@ -45,11 +46,11 @@ function FormTable()
     const handleSubmit =(event)=>
     {
         event.preventDefault()
-        event.target.reset();
+        //event.target.reset();
         console.log(inputdetails);
         setinputdetails(inputdetails);
         setinputdata([...inputdata,inputdetails]);
-        setinputdetails({});
+        //setinputdetails({});
     }
     function handledelete(fid)
     {
@@ -60,197 +61,97 @@ function FormTable()
         })
         setinputdata(Updatedetails);
     }
-    
-    function handleEdit(index)
-    {
-        console.log('Editing row:', index);
-        //const updatedata=filteredData.find((li) => li.index === index);
-        setupdateDetails(index);
-    }
-    // function handleEdit(index) {
-    //     console.log('Editing row:', index);
-    //     setupdateDetails(index);
-    //   }
-    
 
-    function Edit({data,inputdata,setinputdata,setupdateDetails})
-    {
-        const [localData, setLocalData] = useState({ ...data }); 
-
-        function handleChange(e) {
-        const { name, value } = e.target;
-        setLocalData((prevData) => ({ ...prevData, [name]: value }));
-        }
-        
-        function handleUpdate()
-        {
-             //e.preventDefault();
-             console.log('Before Update:', inputdata);
-
-            const rowIndex = inputdata.findIndex((li) => li.index === data.index);
-            console.log('rowindex',rowIndex);
-
-            if (rowIndex !== -1) {
-                const updatedData = inputdata.map((item, index) =>
-                    index === rowIndex ? { ...item, ...localData } : item
-                );
-    
-                setinputdata(updatedData);
-                setupdateDetails(-1);
-            } else {
-                console.error('Row not found for update');
-            }
-            
-        }
-           return(
-            <tr>
-                <td>
-                
-                </td>
-                <td>
-                    <input 
-                required
-                   type="text"
-                    name="Name"
-                    placeholder="First Name"
-                    onChange={handleChange}
-                    maxLength={14}
-                    className="text-center"
-                    value={localData.Name}
-                 />
-                 <input 
-                 required
-                   type="text"
-                    name="Surname"
-                    placeholder="Last Name"
-                    onChange={handleChange}
-                    maxLength={14}
-                    className=""
-                    value={localData.Surname}
-                 />
-                </td>
-                 <td>
-                 <input
-                 required 
-                    type="number"
-                    name="Age"
-                    placeholder="age"
-                    onChange={handleChange}
-                    min={18}
-                    className=""
-                    value={localData.Age}
-                />
-                 </td>
-
-                 <td>
-                 <select name="Branch"
-                 required 
-                      className=""
-                      onChange={handleChange}>
-                     <option value="">Branch</option>
-                     <option value="ME">ME</option>
-                     <option value="EE">EE</option>
-                     <option value="EC">EC</option>
-                     <option value="IT">IT</option>
-                     <option value="CS">CS</option>
-                     <option value="CE">CE</option>    
-                 </select>
-                 </td>
-
-                 <td>
-                 <select name="Section" 
-                 required
-                    className=""
-                     onChange={handleChange}>
-                     <option value="">Section</option>
-                     <option value="A">A</option>
-                     <option value="B">B</option>
-                     <option value="C">C</option>
-                     <option value="D">D</option>
-                     <option value="E">E</option>
-                     <option value="F">F</option>    
-                 </select>
-                 </td>
-
-                 <td>
-                 <input 
-                    required
-                    className=""
-                    type="number"
-                    name="Rollno"
-                    placeholder="Please fill your roll number"
-                    onChange={handleChange}
-                    min={1}
-                />
-                 </td>
-
-                 <td>
-                 <input 
-                    required
-                    className=""
-                    type="text"
-                    name="Email"
-                    placeholder="Please fill your Email Id"
-                    onChange={handleChange}
-                />
-                 </td>
-                
-                <td>
-                <input 
-                    required
-                    className=""
-                    type="text"
-                    name="Code"
-                    placeholder="Area Code"
-                    onChange={handleChange}
-                    maxLength={2}
-                />&nbsp;&nbsp;
-                 <input 
-                    required
-                    className=""
-                    type="text"
-                    name="Phone"
-                    placeholder="Phone Number"
-                    onChange={handleChange}
-                    maxLength={10}
-                />
-                </td>
-                
-                <td><button type="submit" onClick={handleUpdate}>Update</button></td>
-                
-            </tr>
-           )
-    }
-    
-
-   
 
     function deletedetails()
     {
         setinputdata([]);
     }
 
+    // function handleEdit(index)
+    // {
+       
+    //     console.log('name is',index);
+    //    // filteredData?.map((data,index)=>console.log("object",index,data));
+    //     const test =  filteredData?.find((data,ind)=> ind.index === data.index)
+    //     console.log('Before',test);
 
-    const filteredData = inputdata.filter((data) => {
-        const nameMatch = data.Name.toLowerCase().includes(nameFilter.toLowerCase());
-        const ageMatch = data.Age.toString().includes(ageFilter);
-        const branchMatch = data.Branch.toLowerCase().includes(branchFilter.toLowerCase());
-        const sectionMatch = data.Section.toLowerCase().includes(sectionFilter.toLowerCase());
-        const rollnoMatch = data.Rollno.toString().includes(rollNoFilter);
-        const emailMatch = data.Email.toLowerCase().includes(emailFilter.toLowerCase());
-        const phonenoMatch = data.Phone.toString().includes(mobileFilter);
+    //     if(test){
+    //                 test.Name = '';
+    //                 test.Age = '';
+    //                 test.Branch='';
+    //                 console.log('After',test);
+    //             }
+
+    //             setinputdetails(test);
+    //             console.log(test);
+
+    //     // updateObject.Name= 'new';
+    //     // //setinputdetails(updateObject);
+    //     // alert('hi');
+    //     // console.log(updateObject);
+    // }
+    function handleEdit(index)
+    {
+        console.log("filterData",inputdata)
+        const oldData=inputdata.find((fn,ind)=>
+        {
+             return ind === index
+        })
+        console.log('Before',oldData);
+        if(oldData)
+        {
+            oldData.Name=inputdetails.Name;
+           //setinputdetails(inputdetails);
+        setinputdata([...inputdata]);
+        }
+       
+
+    }
+
+
+//     const filteredData = inputdata.filter((data) => {
+//         const nameMatch = data.Name.toLowerCase().includes(nameFilter.toLowerCase());
+//         const ageMatch = data.Age.toString().includes(ageFilter);
+//         const branchMatch = data.Branch.toLowerCase().includes(branchFilter.toLowerCase());
+//         const sectionMatch = data.Section.toLowerCase().includes(sectionFilter.toLowerCase());
+//         const rollnoMatch = data.Rollno.toString().includes(rollNoFilter);
+//         const emailMatch = data.Email.toLowerCase().includes(emailFilter.toLowerCase());
+//         const phonenoMatch = data.Phone.toString().includes(mobileFilter);
         
 
-        return nameMatch && ageMatch && branchMatch && sectionMatch && rollnoMatch && 
-        emailMatch && phonenoMatch;
-  });
+//         return nameMatch && ageMatch && branchMatch && sectionMatch && rollnoMatch && 
+//         emailMatch && phonenoMatch;
+//   });
 
+//   console.log("filterData",filteredData)
+  
+//   filteredData?.map((data,index)=>console.log("object",index,data))
+// useEffect(()=>{
+
+//     const test =  filteredData?.find((data,index)=> index===1 )
+//     console.log('Before',test);
+//     if(test){
+//         test.Name = 'A';
+//         test.Age = 26;
+//         test.Branch="IT";
+//         console.log('After',test);
+//     }
+// },[filteredData]);
   useEffect(()=>
     {
-        console.log('Before storing in local storage:', inputdata);
+        //console.log('Before storing in local storage:', inputdata);
         localStorage.setItem('details',JSON.stringify(inputdata))
-        console.log('After storing in local storage:', inputdata);
+        //console.log('After storing in local storage:', inputdata);
     }, [inputdata]);
+
+    // function handleEdit(index)
+    // {
+    //     console.log('Editing row:', index);
+        
+    //     setupdateDetails(index);
+    // }
+
     
     
     return(
@@ -266,6 +167,7 @@ function FormTable()
                     onChange={handleChange}
                     maxLength={14}
                     className="w-25"
+                    value={inputdetails.Name}
                  />&nbsp;&nbsp;
                  <input 
                  required
@@ -415,18 +317,12 @@ function FormTable()
                 </thead>
                 <tbody className="bg-white">
                     {
-                        filteredData?.map((data,index)=>
+                        inputdata?.map((data,index)=>
                         {
                            
                            return (
-                            UpdateDetails === index ? 
-                            (<Edit key={index} 
-                                data={data} 
-                                inputdata={inputdata} 
-                                setinputdata={setinputdata}
-                                setupdateDetails={setupdateDetails}
-                                />):
-                            (<tr key={index}>
+                            
+                            <tr key={index}>
                                 <td>{index+1}</td>
                                 <td>{data.Name} {data.Surname}</td>
                                 <td>{data.Age}</td>
@@ -448,7 +344,7 @@ function FormTable()
                                     }} className="bg-danger">Delete</button>
                                 </td>
                             </tr>)
-                           )
+                           
                         })
                     }
                 </tbody>
