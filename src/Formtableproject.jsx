@@ -23,13 +23,14 @@ function FormTable()
 {
     const [inputdetails,setinputdetails]= useState({});
     const [inputdata,setinputdata]= useState(getLocalDetails());
-    const [updateDetails,setupdateDetails] = useState(inputdetails);
+    //const [updateDetails,setupdateDetails] = useState(inputdetails);
     const [nameFilter, setNameFilter] = useState('');
-    const [ageFilter, setAgeFilter] = useState('');
-    const [branchFilter, setBranchFilter] = useState('');
-    const [sectionFilter, setSectionFilter] = useState('');
+    const [surnameFilter, setsurnameFilter] = useState('');
+    const [ageFilter, setAgeFilter] = useState();
+    const [branchFilter, setBranchFilter] = useState();
+    const [sectionFilter, setSectionFilter] = useState();
     const [rollNoFilter, setrollNoFilter] = useState('');
-    const [emailFilter, setemailFilter] = useState('');
+    const [emailFilter, setemailFilter] = useState();
     const [mobileFilter, setmobileFilter] = useState('');
     
     
@@ -46,11 +47,11 @@ function FormTable()
     const handleSubmit =(event)=>
     {
         event.preventDefault()
-        //event.target.reset();
+        event.target.reset();
         console.log(inputdetails);
         setinputdetails(inputdetails);
         setinputdata([...inputdata,inputdetails]);
-        //setinputdetails({});
+        setinputdetails({});
     }
     function handledelete(fid)
     {
@@ -93,36 +94,51 @@ function FormTable()
     // }
     function handleEdit(index)
     {
-        console.log("filterData",inputdata)
-        const oldData=inputdata.find((fn,ind)=>
-        {
-             return ind === index
-        })
+        console.log("filterData",filteredData)
+
+         if (!inputdetails || Object.keys(inputdetails).length === 0) {
+        alert("Please fill details in form to make changes");
+        return; 
+    }
+       // setinputdetails([inputdetails]);
+        //const updatedData = [...filteredData];
+        const oldData=filteredData.find((fn,ind)=> ind === index);
+       
         console.log('Before',oldData);
         if(oldData)
         {
             oldData.Name=inputdetails.Name;
+            oldData.Surname=inputdetails.Surname
+            oldData.Age=inputdetails.Age
+            oldData.Branch=inputdetails.Branch
+            oldData.Section=inputdetails.Section
+            oldData.Rollno=inputdetails.Rollno
+            oldData.Email=inputdetails.Email
+            oldData.Phone=inputdetails.Phone
            //setinputdetails(inputdetails);
         setinputdata([...inputdata]);
+        setinputdetails({});
+        
         }
        
 
     }
 
 
-//     const filteredData = inputdata.filter((data) => {
-//         const nameMatch = data.Name.toLowerCase().includes(nameFilter.toLowerCase());
-//         const ageMatch = data.Age.toString().includes(ageFilter);
-//         const branchMatch = data.Branch.toLowerCase().includes(branchFilter.toLowerCase());
-//         const sectionMatch = data.Section.toLowerCase().includes(sectionFilter.toLowerCase());
-//         const rollnoMatch = data.Rollno.toString().includes(rollNoFilter);
-//         const emailMatch = data.Email.toLowerCase().includes(emailFilter.toLowerCase());
-//         const phonenoMatch = data.Phone.toString().includes(mobileFilter);
+    const filteredData = inputdata.filter((data) => {
+        const nameMatch = data.Name?.toLowerCase().includes(nameFilter.toLowerCase());
+        const surnameMatch= data.Surname?.toLowerCase().includes(surnameFilter.toLowerCase());
+        //const ageMatch = data.Age?.toString().includes(ageFilter);
+        //const branchMatch = data?.Branch.toLowerCase().includes(branchFilter.toLowerCase());
+        //const sectionMatch = data?.Section.toLowerCase().includes(sectionFilter.toLowerCase());
+        //const rollnoMatch = data?.Rollno.toString().includes(rollNoFilter);
+        //const emailMatch = data?.Email.toLowerCase().includes(emailFilter.toLowerCase());
+        //const phonenoMatch = data?.Phone.toString().includes(mobileFilter);
         
 
-//         return nameMatch && ageMatch && branchMatch && sectionMatch && rollnoMatch && 
-//         emailMatch && phonenoMatch;
-//   });
+        return nameMatch && surnameMatch 
+         ;
+  });
 
 //   console.log("filterData",filteredData)
   
@@ -167,7 +183,7 @@ function FormTable()
                     onChange={handleChange}
                     maxLength={14}
                     className="w-25"
-                    value={inputdetails.Name}
+                    value={inputdetails.Name || ''}
                  />&nbsp;&nbsp;
                  <input 
                  required
@@ -177,6 +193,7 @@ function FormTable()
                     onChange={handleChange}
                     maxLength={14}
                     className="w-25"
+                    value={inputdetails.Surname || ''}
                  />
              </label><br /><br />
              <label className="fw-bold">Age&nbsp;
@@ -188,6 +205,7 @@ function FormTable()
                     onChange={handleChange}
                     min={18}
                     className="age_width age_input"
+                    value={inputdetails.Age || ''}
                 />
              </label><br /><br />
              <label className="fw-bold">Branch
@@ -208,6 +226,7 @@ function FormTable()
                  <select name="Section" 
                  required
                     className="section_option"
+                    value={inputdetails.Section || ''}
                      onChange={handleChange}>
                      <option value="">Section</option>
                      <option value="A">A</option>
@@ -227,6 +246,8 @@ function FormTable()
                     placeholder="Please fill your roll number"
                     onChange={handleChange}
                     min={1}
+                value={inputdetails.Rollno || ''}
+                    
                 />
              </label><br /><br />
              <label className="fw-bold">Email Id
@@ -237,6 +258,7 @@ function FormTable()
                     name="Email"
                     placeholder="Please fill your Email Id"
                     onChange={handleChange}
+                    value={inputdetails.Email || '' }
                 />
              </label><br /><br />
              <label className="fw-bold">Phone No.
@@ -248,6 +270,7 @@ function FormTable()
                     placeholder="Area Code"
                     onChange={handleChange}
                     maxLength={2}
+                    value={inputdetails.Code || ''}
                 />&nbsp;&nbsp;
                  <input 
                     required
@@ -257,6 +280,7 @@ function FormTable()
                     placeholder="Phone Number"
                     onChange={handleChange}
                     maxLength={10}
+                    value={inputdetails.Phone || ''}
                 />
              </label><br /><br />
              <input type="submit" className="bg-primary w-25 h5 fw-bold h-25 submit_btn" /><br /><br />
@@ -266,6 +290,9 @@ function FormTable()
             <input type="text" value={nameFilter} 
             onChange={(e) => setNameFilter(e.target.value)} 
             placeholder="Name" className=" text-center search-name"/>
+            <input type="text" value={surnameFilter} 
+            onChange={(e) => setsurnameFilter(e.target.value)} 
+            placeholder="Surname" className="search-surname"/>
             
             <input type="text" value={ageFilter} 
             onChange={(e) => setAgeFilter(e.target.value)}
@@ -317,7 +344,7 @@ function FormTable()
                 </thead>
                 <tbody className="bg-white">
                     {
-                        inputdata?.map((data,index)=>
+                        filteredData?.map((data,index)=>
                         {
                            
                            return (
