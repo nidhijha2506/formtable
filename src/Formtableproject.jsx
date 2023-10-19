@@ -1,6 +1,7 @@
 import React, { useEffect, useState } from "react";
 import 'bootstrap/dist/css/bootstrap.css';
 import "./Style.css";
+import EditButtonModel from "./Editmodel";
 
 //to get data from local storage
 
@@ -23,7 +24,9 @@ function FormTable()
 {
     const [inputdetails,setinputdetails]= useState({});
     const [inputdata,setinputdata]= useState(getLocalDetails());
+    const [showEditModel,setEditModel]=useState(false);
     //const [updateDetails,setupdateDetails] = useState(inputdetails);
+    const [tableData,setTableData]=useState();
     const [nameFilter, setNameFilter] = useState('');
     const [surnameFilter, setsurnameFilter] = useState('');
     const [ageFilter, setAgeFilter] = useState();
@@ -56,7 +59,7 @@ function FormTable()
     function handledelete(fid)
     {
         // alert(fid);
-        const Updatedetails=inputdata.filter((fn,ind)=>
+        const Updatedetails=filteredData.filter((fn,ind)=>
         {
              return ind!== fid
         })
@@ -92,37 +95,49 @@ function FormTable()
     //     // alert('hi');
     //     // console.log(updateObject);
     // }
-    function handleEdit(index)
-    {
-        console.log("filterData",filteredData)
+    // function handleEdit(index)
+    // {
+    //     console.log("filterData",filteredData)
 
-         if (!inputdetails || Object.keys(inputdetails).length === 0) {
-        alert("Please fill details in form to make changes");
-        return; 
-    }
-       // setinputdetails([inputdetails]);
-        //const updatedData = [...filteredData];
-        const oldData=filteredData.find((fn,ind)=> ind === index);
+    //      if (!inputdetails || Object.keys(inputdetails).length === 0) {
+    //     alert("Please fill details in form to make changes");
+    //     return; 
+    // }
+    //    // setinputdetails([inputdetails]);
+    //     //const updatedData = [...filteredData];
+    //     const oldData=filteredData.find((fn,ind)=> ind === index);
        
-        console.log('Before',oldData);
-        if(oldData)
-        {
-            oldData.Name=inputdetails.Name;
-            oldData.Surname=inputdetails.Surname
-            oldData.Age=inputdetails.Age
-            oldData.Branch=inputdetails.Branch
-            oldData.Section=inputdetails.Section
-            oldData.Rollno=inputdetails.Rollno
-            oldData.Email=inputdetails.Email
-            oldData.Phone=inputdetails.Phone
-           //setinputdetails(inputdetails);
-        setinputdata([...inputdata]);
-        setinputdetails({});
+    //     console.log('Before',oldData);
+    //     if(oldData)
+    //     {
+    //         oldData.Name=inputdetails.Name;
+    //         oldData.Surname=inputdetails.Surname
+    //         oldData.Age=inputdetails.Age
+    //         oldData.Branch=inputdetails.Branch
+    //         oldData.Section=inputdetails.Section
+    //         oldData.Rollno=inputdetails.Rollno
+    //         oldData.Email=inputdetails.Email
+    //         oldData.Phone=inputdetails.Phone
+    //        //setinputdetails(inputdetails);
+    //     setinputdata([...inputdata]);
+    //     setinputdetails({});
         
-        }
+    //     }
        
 
+    // }
+   
+    const closeModel =() => 
+    {
+        setEditModel(false);
+       
     }
+    
+    
+   
+    
+    
+
 
 
     const filteredData = inputdata.filter((data) => {
@@ -139,6 +154,16 @@ function FormTable()
         return nameMatch && surnameMatch 
          ;
   });
+  //const tableData =filteredData;
+ // filteredData?.map((data,index)=>console.log("object",index,data));
+  
+  function editTable(index)
+  {
+    
+    setEditModel(true);
+    setTableData(filteredData.find((fn,ind)=> ind === index));
+  }
+
 
 //   console.log("filterData",filteredData)
   
@@ -183,7 +208,7 @@ function FormTable()
                     onChange={handleChange}
                     maxLength={14}
                     className="w-25"
-                    value={inputdetails.Name || ''}
+                    value={inputdetails.Name}
                  />&nbsp;&nbsp;
                  <input 
                  required
@@ -193,7 +218,7 @@ function FormTable()
                     onChange={handleChange}
                     maxLength={14}
                     className="w-25"
-                    value={inputdetails.Surname || ''}
+                    value={inputdetails.Surname}
                  />
              </label><br /><br />
              <label className="fw-bold">Age&nbsp;
@@ -205,13 +230,14 @@ function FormTable()
                     onChange={handleChange}
                     min={18}
                     className="age_width age_input"
-                    value={inputdetails.Age || ''}
+                    value={inputdetails.Age}
                 />
              </label><br /><br />
              <label className="fw-bold">Branch
                  <select name="Branch"
                  required 
                       className="branch_option"
+                      defaultValue={inputdetails.Branch}
                       onChange={handleChange}>
                      <option value="">Branch</option>
                      <option value="ME">ME</option>
@@ -226,7 +252,7 @@ function FormTable()
                  <select name="Section" 
                  required
                     className="section_option"
-                    value={inputdetails.Section || ''}
+                    value={inputdetails.Section}
                      onChange={handleChange}>
                      <option value="">Section</option>
                      <option value="A">A</option>
@@ -246,7 +272,7 @@ function FormTable()
                     placeholder="Please fill your roll number"
                     onChange={handleChange}
                     min={1}
-                value={inputdetails.Rollno || ''}
+                value={inputdetails.Rollno}
                     
                 />
              </label><br /><br />
@@ -258,7 +284,7 @@ function FormTable()
                     name="Email"
                     placeholder="Please fill your Email Id"
                     onChange={handleChange}
-                    value={inputdetails.Email || '' }
+                    value={inputdetails.Email}
                 />
              </label><br /><br />
              <label className="fw-bold">Phone No.
@@ -270,7 +296,7 @@ function FormTable()
                     placeholder="Area Code"
                     onChange={handleChange}
                     maxLength={2}
-                    value={inputdetails.Code || ''}
+                    value={inputdetails.Code}
                 />&nbsp;&nbsp;
                  <input 
                     required
@@ -280,7 +306,7 @@ function FormTable()
                     placeholder="Phone Number"
                     onChange={handleChange}
                     maxLength={10}
-                    value={inputdetails.Phone || ''}
+                    value={inputdetails.Phone}
                 />
              </label><br /><br />
              <input type="submit" className="bg-primary w-25 h5 fw-bold h-25 submit_btn" /><br /><br />
@@ -358,9 +384,16 @@ function FormTable()
                                 <td>{data.Rollno}</td>
                                 <td>{data.Email}</td>
                                 <td>{data.Code} {data.Phone}</td>
-                                <td>
+                                {/* <td>
                                     <button type="button" onClick={()=> handleEdit(index)}
                                     className="bg-success">Edit</button>
+                                </td> */}
+                                <td>
+                                {/* <button onClick={()=> setEditModel(true)} className="bg-success">Edit</button> */}
+                                
+                                <button onClick={()=>editTable(index)}className="bg-success" >Edit</button>
+                                { showEditModel && <EditButtonModel tabledata={tableData} closeModel ={closeModel
+                                } />}
                                 </td>
                                 <td>
                                     <button type="button" onClick={()=>
@@ -377,6 +410,7 @@ function FormTable()
                 </tbody>
              </table><br />
              <button type="button" onClick={deletedetails} className="bg-danger reset_button">Reset All Details</button><br /><br />
+             
 
          </>
     )

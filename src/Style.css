@@ -154,3 +154,30 @@ label
     width: 150px;
     height: 30px;
 }
+
+.container
+{
+    margin: 5rem;
+}
+.model-wrapper
+{
+    position: fixed;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    top: 0;
+    background-color: rgba(189, 189, 189, 0.5);
+   
+}
+.edit-form-input
+{
+    margin-right: 150px;
+}
+.model-container
+{
+    position: fixed;
+    top: 40%;
+    left: 18%;
+    max-width: 30rem;
+    transform: translate(-50%, -50%);
+}
