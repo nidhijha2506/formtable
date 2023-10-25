@@ -132,6 +132,7 @@ function FormTable()
         setEditModel(false);
        
     }
+    console.log(typeof inputdata);
     
     
    
@@ -140,7 +141,7 @@ function FormTable()
 
 
 
-    const filteredData = inputdata.filter((data) => {
+    const filteredData = [inputdata].filter((data) => {
         const nameMatch = data.Name?.toLowerCase().includes(nameFilter.toLowerCase());
         const surnameMatch= data.Surname?.toLowerCase().includes(surnameFilter.toLowerCase());
         //const ageMatch = data.Age?.toString().includes(ageFilter);

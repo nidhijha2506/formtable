@@ -17,36 +17,58 @@ const getLocalDetails =()=>
 
 const EditButtonModel =( {closeModel,tabledata,show} )=>
     {
-        const [inputdetails,setinputdetails]= useState({tabledata});
-        const [inputdata,setinputdata]= useState(getLocalDetails());
+        const [editdetails,seteditdetails]= useState({...tabledata});
+        const [Tabledata,setTabledata]= useState(getLocalDetails());
         // const defaultName=tabledata.Name;
 
         const handleChange =(event)=>
     {
         let name=event.target.name;
-        let value=event.target.value.toLowerCase()
-        .split(' ')
-        .map((word) => word.charAt(0).toUpperCase() + word.slice(1))
-        .join(' ');
-        setinputdetails(values => ({...values, [name]: value}));
+        let value=event.target.value;
+        seteditdetails({...editdetails, [name]: value});
     }
 
     const handleUpdate =(event)=>
     {
-        event.preventDefault()
-        event.target.reset();
-        console.log(inputdetails);
-        setinputdetails(inputdetails);
-        setinputdata([...inputdata,inputdetails]);
-        setinputdetails({});
+
+        console.log("TD",tabledata);
+        console.log("TD",editdetails);
+        event.preventDefault();
+        //event.target.reset();
+        // console.log(tabledata);
+        // setinputdetails(inputdetails);
+        // setinputdata([...inputdata,inputdetails]);
+        // setinputdetails({});
+
+    //    seteditdetails(editdetails);
+       //setTabledata(editdetails);
+     tabledata.Name = editdetails.Name;
+         tabledata.Surname=editdetails.Surname;
+         tabledata.Branch=editdetails.Branch;
+          tabledata.Age=editdetails.Age;
+          tabledata.Section=editdetails.Section;
+          tabledata.Rollno=editdetails.Rollno;
+          tabledata.Email=editdetails.Email;
+          tabledata.Code=editdetails.Code;
+          tabledata.Phone=editdetails.Phone;
+          setTabledata(editdetails);
+          closeModel();
+         
     }
+
+    useEffect(()=>
+    {
+        //console.log('Before storing in local storage:', inputdata);
+        localStorage.setItem('details',JSON.stringify(Tabledata))
+        //console.log('After storing in local storage:', inputdata);
+    }, [Tabledata]);
     
         return(
             <>
             {/* onClick={closeModel} */}
              <div className="model-wrapper" >
              <div className=" model-container">
-                <form onSubmit={handleUpdate} className="mt-5 bg-secondary edit_form">
+                <form onSubmit={handleUpdate} className="mt-5 bg-secondary edit_form" >
                 <h3 className="bg-black text-white py-2 text-center stu_details">Edit Details</h3>
              <div className="edit-form-input">
              <label className="fw-bold mt-3">Full Name &nbsp;&nbsp;&nbsp;
@@ -90,7 +112,7 @@ const EditButtonModel =( {closeModel,tabledata,show} )=>
                  required 
                       className="branch_option"
                       onChange={handleChange}
-                      value={tabledata.Branch}> 
+                      defaultValue={tabledata.Branch}> 
                      <option value="">Branch</option>
                      <option value="ME">ME</option>
                      <option value="EE">EE</option>
@@ -166,8 +188,8 @@ const EditButtonModel =( {closeModel,tabledata,show} )=>
                    
                 />
              </label><br /><br />
-             </div>
-             <button onClick={closeModel} className="bg-primary">Update</button>&nbsp;&nbsp;&nbsp;
+             </div> 
+             <button className="bg-primary" >Update</button>&nbsp;&nbsp;&nbsp; 
              <button onClick={closeModel} className="bg-danger">Cancel</button><br /><br />
              </form><br />
              </div>
